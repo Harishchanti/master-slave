@@ -1,0 +1,54 @@
+server.port: 8080
+
+#Database
+datasource:
+  primary:
+    url: "jdbc:mysql://localhost/test_master?autoReconnect=true&useSSL=false"
+    username: "root"
+    password: "root"
+    driverclassname: com.mysql.jdbc.Driver
+    maxconnections: 10
+    minconnections: 2
+    maxpartitions: 2
+    maxlifetimeinmillis: 30000
+    connectiontimeoutinmillis: 6000
+
+  secondary:
+    url: "jdbc:mysql://localhost/test_slave?autoReconnect=true&useSSL=false"
+    username: "root"
+    password: "root"
+    driverclassname: com.mysql.jdbc.Driver
+    maxconnections: 10
+    minconnections: 2
+    maxpartitions: 2
+    maxlifetimeinmillis: 30000
+    connectiontimeoutinmillis: 6000
+
+
+hibernate:
+  dialect: org.hibernate.dialect.MySQL5Dialect
+  format_sql: true
+  hbm2ddl:
+    auto: update
+  ejb:
+    naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
+  show_sql: false
+  enable_lazy_load_no_trans: true
+
+org:
+  hibernate:
+    envers:
+      audit_table_suffix: _audit
+      revision_field_name: rev
+      revision_type_field_name: revtype
+      revision_on_collection_change: true
+      audit_strategy: org.hibernate.envers.strategy.ValidityAuditStrategy
+      audit_strategy_validity_end_rev_field_name: revend
+      audit_strategy_validity_store_revend_timestamp: true
+      audit_strategy_validity_revend_timestamp_field_name: revend_tstamp
+
+swagger:
+  enabled: true
+  servicename: Master-Slave
+  description: Spring boot application to demonstrate master and slave Db access from single application
+  version: 0.1
